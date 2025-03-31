@@ -1,53 +1,312 @@
+/* Reseteo de estilos básicos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
     background-color: #f5f5f7;
     color: #333;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Título */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
     text-align: center;
 }
 
+/* Contenedor principal */
 .container {
-    max-width: 800px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.table-container {
-    overflow-x: auto;
-}
-
-table {
+    display: flex;
     width: 100%;
-    border-collapse: collapse;
+    max-width: 99%;
+    margin-top: 20px;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap; /* Asegura que el formulario y la tabla se adapten a pantallas pequeñas */
+}
+
+/* Formulario */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+    transition: all 0.3s ease;
+}
+
+.form-container h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #333;
     margin-bottom: 20px;
+    text-align: center;
 }
 
-th, td {
+label {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    display: block;
+    color: #666;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 12px 15px; /* Mayor comodidad al escribir */
+    font-size: 1rem;
     border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    outline: none;
+    transition: all 0.3s ease;
 }
 
-th {
-    background-color: #eaeaea;
+input[type="text"]:focus, select:focus {
+    border-color: #007aff;
+    box-shadow: 0 0 8px rgba(0, 122, 255, 0.5); /* Sombra suave al enfocar */
 }
 
+/* Estilos para el campo de descripción */
+textarea {
+    width: 100%;
+    height: 60px; /* Establecer altura fija */
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical; /* Permite redimensionar solo en dirección vertical */
+    overflow-y: auto; /* Añade scroll vertical si el contenido es más grande */
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    border-color: #007aff;
+    box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
+}
+
+/* Botón principal */
 button {
-    padding: 10px 15px;
-    background: black;
+    width: 100%;
+    padding: 12px;
+    background-color: #007aff;
     color: white;
     border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
     cursor: pointer;
-    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
 button:hover {
-    background: #333;
+    background-color: #005bb5;
+}
+
+/* Filtro de búsqueda mejorado */
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-container input {
+    flex: 1;
+    max-width: 250px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.filter-container input:focus {
+    border-color: #007aff;
+}
+
+
+/* ------------------------------------------ */
+/* Tabla de componentes */
+/* ------------------------------------------ */
+
+.addComponents{
+    margin: 12px;
+}
+
+.table-container {
+    flex: 1;
+    overflow: auto; /* Agregar scroll horizontal si es necesario */
+}
+
+/* Definir un ancho fijo para las columnas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Estilos para celdas de la tabla */
+th, td {
+    padding: 15px;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+    word-wrap: break-word;  /* Permite que el texto se ajuste a la celda */
+    white-space: normal;    /* Asegura que el texto no se quede en una sola línea */
+}
+
+/* Estilos para las cabeceras */
+th {
+    background-color: #f7f7f7;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Definir un ancho mínimo para cada columna */
+td:nth-child(1), th:nth-child(1),  /* Columna de ID */
+td:nth-child(2), th:nth-child(2),  /* Columna de categoría */
+td:nth-child(3), th:nth-child(3),  /* Columna de nombre */
+td:nth-child(4), th:nth-child(4) { /* Columna de precio */
+    width: 120px;  /* Ancho mínimo de la columna de precio */
+}
+
+td:nth-child(5), th:nth-child(5) { /* Columna de descripción */
+    width: 250px;  /* Ancho mínimo de la columna de descripción */
+}
+
+td:nth-child(6), th:nth-child(6) { /* Columna de botones */
+    width: 200px;  /* Ancho mínimo de la columna de botones */
+}
+
+/* Ajuste para el scroll horizontal en versión móvil */
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto; /* Permitir scroll horizontal */
+    }
+
+    table {
+        width: auto; /* Asegura que la tabla no se estire más allá de su contenido */
+    }
+
+    /* Ajustes de tamaño mínimo para las celdas */
+    th, td {
+        min-width: 150px; /* Ancho mínimo general para las celdas */
+    }
+
+    td:nth-child(4), th:nth-child(4) { /* Columna de precio */
+        min-width: 100px;
+    }
+
+    td:nth-child(5), th:nth-child(5) { /* Columna de descripción */
+        min-width: 300px;
+    }
+
+    td:nth-child(6), th:nth-child(6) { /* Columna de botones */
+        min-width: 200px;
+    }
+}
+
+/* ------------------------------------------ */
+/* Resto de estilos de la tabla y componentes */
+/* ------------------------------------------ */
+
+tbody {
+    display: block;
+    overflow-y: scroll;
+    max-height: 450px;
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Agregar separación entre el formulario y la tabla */
+.container {
+    gap: 40px;
+}
+
+
+/* ------------------------------------------ */
+/* Botones de acción en la tabla */
+/* ------------------------------------------ */
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 70%;
+}
+
+.edit-btn {
+    background-color: transparent;
+    color: #a6c5e7;
+    border: 2px solid #007aff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: min-content;
+}
+
+.edit-btn:hover {
+    background-color: #007aff;
+    color: white;
+}
+
+.delete-btn {
+    background-color: transparent;
+    color: #ff3b30;
+    border: 2px solid #ff3b30;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: min-content;
+}
+
+.delete-btn:hover {
+    background-color: #ff3b30;
+    color: white;
+}
+
+/* ------------------------------------------ */
+/* Scroll de tabla */
+/* ------------------------------------------ */
+
+
+/* Media queries para dispositivos pequeños */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 100%;
+    }
 }

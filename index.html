@@ -3,29 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Gestión de Componentes</title>
+    <title>Interfaz de Administración</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Gestión de Componentes</h1>
-        <div class="table-container">
-            <table id="tabla-componentes">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Nombre</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Los datos se cargarán aquí dinámicamente -->
-                </tbody>
-            </table>
+    <h1>Gestión de Componentes</h1>
+    
+
+    <div class="table-actions">
+        <div class="filters">
+            <input type="text" id="search" placeholder="Buscar por nombre...">
+            <select id="category-filter">
+                <option value="">Todas las categorías</option>
+                <option value="1">Procesador (CPU)</option>
+                <option value="2">Memoria RAM</option>
+                <option value="3">Tarjeta Gráfica (GPU)</option>
+                <option value="4">Almacenamiento</option>
+                <option value="5">Enfriamiento</option>
+                <option value="6">Fuente de Poder</option>
+                <option value="7">Sistema Operativo</option>
+                <option value="8">Software</option>
+                <option value="9">Accesorios</option>
+            </select>
         </div>
-        <button id="guardar-cambios">Guardar Cambios</button>
+        
+        <div class="container">
+            <div class="form-container">
+                <h2 class="addComponents">Añadir Componente</h2>
+                <form id="form-componente">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                
+                    <label for="categoria">Categoría:</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Seleccionar categoría</option>
+                    </select>
+                
+                    <label for="precio">Precio:</label>
+                    <input type="text" id="precio" name="precio" required>
+                
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Ingresa una descripción aquí..."></textarea>
+                
+                    <button type="submit">Agregar Componente</button>
+                </form>                      
+            </div>
+    
+            <div class="table-container">
+                <h2>Componentes en la Base de Datos</h2>
+                <table id="tabla-componentes">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos de la tabla se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+   
+
     <script src="index.js"></script>
 </body>
 </html>
