@@ -8,7 +8,6 @@
 </head>
 <body>
     <h1>Gestión de Componentes</h1>
-    
 
     <div class="table-actions">
         <div class="filters">
@@ -46,7 +45,12 @@
                     <textarea id="descripcion" name="descripcion" placeholder="Ingresa una descripción aquí..."></textarea>
                 
                     <button type="submit">Agregar Componente</button>
-                </form>                      
+                </form>  
+                
+                <div class="file-actions">
+                    <button id="upload-file" class="small-btn blue-btn">Cargar</button>
+                    <button id="download-file" class="small-btn green-btn">Descargar</button>
+                </div>                
             </div>
     
             <div class="table-container">
@@ -55,8 +59,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
                             <th>Categoría</th>
+                            <th>Nombre</th>
                             <th>Precio</th>
                             <th>Descripción</th>
                             <th>Acciones</th>

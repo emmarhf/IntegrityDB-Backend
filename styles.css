@@ -117,6 +117,39 @@ button:hover {
     background-color: #005bb5;
 }
 
+.file-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.small-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.blue-btn {
+    background-color: #005bb5;
+    color: white;
+}
+
+.blue-btn:hover {
+    background-color: #004999;
+}
+
+.green-btn {
+    background-color: #218838;
+    color: white;
+}
+
+.green-btn:hover {
+    background-color: #1a6d2e;
+}
+
 /* Filtro de búsqueda mejorado */
 .filter-container {
     margin-bottom: 20px;
@@ -233,7 +266,7 @@ td:nth-child(6), th:nth-child(6) { /* Columna de botones */
 tbody {
     display: block;
     overflow-y: scroll;
-    max-height: 450px;
+    max-height: 500px;
 }
 
 thead, tbody tr {

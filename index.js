@@ -195,3 +195,47 @@ async function editarComponente(id) {
         fetchComponentes();
     });
 }
+
+
+// Función para convertir los datos de la tabla a formato CSV
+function convertirACSV(componentes) {
+    const encabezados = ["ID", "Categoría", "Nombre", "Precio", "Descripción"];
+    const filas = componentes.map(componente => [
+        componente.id,
+        categorias[componente.categoria_id] || "Desconocido",
+        componente.nombre,
+        componente.precio,
+        `"${componente.descripcion.replace(/"/g, '""')}"`  // Escapar las comillas dobles dentro de la descripción
+    ]);
+
+    // Combinar encabezados y filas en un formato CSV
+    const contenido = [encabezados, ...filas].map(fila => fila.join(",")).join("\n");
+    return contenido;
+}
+// Función para descargar el archivo CSV
+function descargarArchivo(componentes) {
+    const csv = convertirACSV(componentes);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const enlace = document.createElement('a');
+    const fechaHora = new Date().toLocaleString();
+
+    // Crear el nombre del archivo
+    const nombreArchivo = `componentes_${fechaHora}.csv`.replace(/[:]/g, "-"); // Reemplazar ":" por "-"
+    
+    // Crear enlace para descargar
+    enlace.href = URL.createObjectURL(blob);
+    enlace.download = nombreArchivo;
+    enlace.click();
+
+    // Notificar por WhatsApp
+    const mensaje = `¡Se realizó una descarga de componentes!\nFecha y Hora: ${fechaHora}`;
+    const enlaceWhatsApp = `https://wa.me/5522971545?text=${encodeURIComponent(mensaje)}`;
+    
+    // Abrir enlace de WhatsApp
+    window.open(enlaceWhatsApp, "_blank");
+}
+
+// Evento para el botón de descarga
+document.getElementById("download-file").addEventListener("click", () => {
+    descargarArchivo(componentes); // Descargar el archivo y notificar
+});
