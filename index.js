@@ -236,19 +236,25 @@ const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
     const blob = new Blob([csv], { type: 'text/csv' });
     const enlace = document.createElement('a');
     const fechaHora = new Date().toLocaleString();
-
     const nombreArchivo = `componentes_${fechaHora}.csv`.replace(/[:]/g, "-");
+
     enlace.href = URL.createObjectURL(blob);
     enlace.download = nombreArchivo;
     enlace.click();
 
-    // 📲 Notificar solo si se indica
+    console.log("📥 descarga realizada", { notificar });
+
     if (notificar) {
         const mensaje = `¡Se realizó una descarga de componentes!\nFecha y Hora: ${fechaHora}`;
         const enlaceWhatsApp = `https://wa.me/5522971545?text=${encodeURIComponent(mensaje)}`;
+        console.log("📲 enviando WhatsApp desde descarga");
+        console.trace("🧩 WhatsApp lanzado desde descargarArchivo()");
         window.open(enlaceWhatsApp, "_blank");
+
     }
 }
+
+
 
  
  // Evento para el botón de descarga
@@ -263,6 +269,14 @@ const btnConfirmarCarga = document.getElementById("confirmar-carga");
 const btnCancelarCarga = document.getElementById("cancelar-carga");
 const previewTablaBody = document.querySelector("#preview-table tbody");
 const previewContainer = document.getElementById("preview-carga");
+const btnEliminarBase = document.getElementById("eliminar-base");
+const tablaVacia = [
+    ["ID", "Categoría", "Nombre", "Precio", "Descripción"]
+];
+
+
+
+let datosCargados = []; // fuera de los listeners
 
 // 🧭 Mostrar el modal
 document.getElementById("btn-cargar-base").addEventListener("click", () => {
@@ -277,7 +291,63 @@ btnCancelarCarga.addEventListener("click", () => {
     modalCarga.classList.add("hidden");
 });
 
-let datosCargados = []; // fuera de los listeners
+
+// 🗑️ Eliminar Base
+const overlay = document.getElementById("overlay-cargando");
+
+btnEliminarBase.addEventListener("click", async () => {
+    const confirmar = confirm("⚠️ ¿Estás seguro que quieres eliminar toda la base de componentes?\nEsto eliminará los registros uno por uno.");
+
+    if (!confirmar) return;
+
+    // Mostrar overlay y desactivar botones
+    overlay.classList.remove("hidden");
+    btnEliminarBase.disabled = true;
+    btnConfirmarCarga.disabled = true;
+    btnCancelarCarga.disabled = true;
+
+    try {
+        // 📥 Descargar respaldo sin notificación
+        descargarArchivo(componentes, false); // ❌ No notificar
+
+        // 🗑️ Eliminar uno por uno
+        for (const componente of componentes) {
+            await fetch(`${SUPABASE_URL}/rest/v1/componentes?id=eq.${componente.id}`, {
+                method: "DELETE",
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": `Bearer ${SUPABASE_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
+        }
+
+        // ✅ Refrescar UI
+        await fetchComponentes();
+        modalCarga.classList.add("hidden");
+
+        alert("✅ Base eliminada correctamente.");
+
+        // 📲 Notificación única
+        const fechaHora = new Date().toLocaleString();
+        const mensaje = `⚠️ Se eliminó toda la base de componentes.\n📅 Fecha y hora: ${fechaHora}`;
+        const enlaceWA = `https://wa.me/5522971545?text=${encodeURIComponent(mensaje)}`;
+        window.open(enlaceWA, "_blank", "noopener,noreferrer");
+
+    } catch (error) {
+        console.error("❌ Error eliminando base:", error);
+        alert("❌ Ocurrió un error al eliminar la base.");
+    } finally {
+        overlay.classList.add("hidden");
+        btnEliminarBase.disabled = false;
+        btnConfirmarCarga.disabled = false;
+        btnCancelarCarga.disabled = false;
+    }
+});
+
+
+
+
 
 // 🧪 Previsualizar archivo seleccionado
 inputArchivo.addEventListener("change", async (event) => {
@@ -344,7 +414,7 @@ btnConfirmarCarga.addEventListener("click", async () => {
     if (!confirmar) return;
 
     // 📥 1. Descargar respaldo actual
-    descargarArchivo(componentes);
+    descargarArchivo(componentes, false); // en flujo de carga
 
     const headers = datosCargados[0];
     const datosValidos = datosCargados.slice(1).map(fila => {
