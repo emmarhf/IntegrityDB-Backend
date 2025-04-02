@@ -74,7 +74,31 @@
         </div>
     </div>
    
+    <!-- Modal de carga de base de datos -->
+    <div id="modal-carga-base" class="modal hidden">
+        <div class="modal-content">
+            <h2>⚠️ Advertencia antes de cargar nueva base</h2>
+            <p>
+                Al cargar una nueva base de datos:
+                <ul>
+                    <li>📥 Se descargará automáticamente una copia de respaldo de la base actual.</li>
+                    <li>📤 Se notificará por WhatsApp al administrador.</li>
+                    <li>⚠️ Este proceso sobrescribirá los datos existentes.</li>
+                </ul>
+            </p>
+
+            <label for="archivo-base">Selecciona el archivo:</label>
+            <input type="file" id="archivo-base" accept=".xlsx, .xls, .csv">
+
+            <div class="modal-buttons">
+                <button id="confirmar-carga" class="green-btn">✅ Cargar Base</button>
+                <button id="cancelar-carga" class="blue-btn">❌ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
 
     <script src="index.js"></script>
+
 </body>
 </html>
