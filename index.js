@@ -73,25 +73,35 @@ const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
  
  // 🖥️ Renderizar la tabla con los datos obtenidos
  function renderTable(data) {
-     tableBody.innerHTML = ""; // Limpiar tabla
-     data.forEach(componente => {
-         const row = document.createElement("tr");
-         row.innerHTML = `
-             <td>${componente.id}</td>
-             <td>${categorias[componente.categoria_id] || "Desconocido"}</td>  
-             <td>${componente.nombre}</td>
-             <td>${componente.precio}</td>
-             <td>${componente.descripcion}</td>
-             <td>
-                 <div class="action-buttons">
-                     <button class="edit-btn" onclick="editarComponente('${componente.id}')">Editar</button>
-                     <button class="delete-btn" onclick="eliminarComponente('${componente.id}')">Eliminar</button>
-                 </div>
-             </td>
-         `;
-         tableBody.appendChild(row);
-     });
- }
+    tableBody.innerHTML = ""; // Limpiar tabla
+    data.forEach(componente => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${componente.id}</td>
+            <td>${categorias[componente.categoria_id] || "Desconocido"}</td>  
+            <td>${componente.nombre}</td>
+            <td>$${componente.precio.toLocaleString("es-MX")}</td>
+            <td>${componente.descripcion}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="editarComponente('${componente.id}')">Editar</button>
+                    <button class="delete-btn" onclick="eliminarComponente('${componente.id}')">Eliminar</button>
+                </div>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+
+    // Actualizar contador
+    const contador = document.getElementById("contador-componentes");
+    if (searchInput.value.trim() || categoryFilter.value) {
+        contador.textContent = `${data.length} resultados encontrados`;
+    } else {
+        contador.textContent = `${data.length} componentes`;
+    }
+}
+
  
  // 🔍 Filtrar componentes por búsqueda
  function filtrarComponentes() {
@@ -345,21 +355,21 @@ btnEliminarBase.addEventListener("click", async () => {
     }
 });
 
-
-
-
-
 // 🧪 Previsualizar archivo seleccionado
 inputArchivo.addEventListener("change", async (event) => {
     const archivo = event.target.files[0];
     if (!archivo) return;
+
+    // 👉 MOSTRAR nombre del archivo seleccionado
+    const nombreArchivo = document.getElementById("archivo-seleccionado");
+    nombreArchivo.textContent = archivo.name;
 
     const extension = archivo.name.split('.').pop().toLowerCase();
     const lector = new FileReader();
 
     lector.onload = function (e) {
         let filas;
-    
+
         if (archivo.name.endsWith(".csv")) {
             const texto = e.target.result;
             const workbook = XLSX.read(texto, { type: "string" });
@@ -371,11 +381,9 @@ inputArchivo.addEventListener("change", async (event) => {
             const hoja = libro.Sheets[libro.SheetNames[0]];
             filas = XLSX.utils.sheet_to_json(hoja, { header: 1 });
         }
-    
-        // ✅ Ahora sí: guardar los datos parseados globalmente
+
         datosCargados = filas;
-    
-        // Renderizar vista previa
+
         previewTablaBody.innerHTML = "";
         filas.slice(1).forEach(fila => {
             const [id, categoria, nombre, precio, descripcion] = fila;
@@ -391,18 +399,19 @@ inputArchivo.addEventListener("change", async (event) => {
                 previewTablaBody.appendChild(tr);
             }
         });
-    
+
         previewContainer.classList.remove("hidden");
     };
-    
 
     if (archivo.name.endsWith(".csv")) {
-        lector.readAsText(archivo, "utf-8"); // 🧠 Codificación explícita
+        lector.readAsText(archivo, "utf-8");
     } else {
-        lector.readAsArrayBuffer(archivo); // Para .xlsx, .xls
+        lector.readAsArrayBuffer(archivo);
     }
-
 });
+
+
+
 
 btnConfirmarCarga.addEventListener("click", async () => {
     if (!datosCargados || datosCargados.length === 0) {
@@ -485,4 +494,28 @@ btnConfirmarCarga.addEventListener("click", async () => {
         console.error("❌ Error en carga de base:", error);
         alert("❌ Error al cargar la base:\n" + error.message);
     }
+});
+
+const toggleGuia = document.getElementById("toggle-guia");
+const contenidoGuia = document.getElementById("contenido-guia");
+
+toggleGuia.addEventListener("click", () => {
+    contenidoGuia.classList.toggle("hidden");
+});
+
+document.getElementById("descargar-plantilla").addEventListener("click", () => {
+    const encabezados = ["ID", "Categoría", "Nombre", "Precio", "Descripción"];
+    const ejemplo = [
+        ["CPU-I5-10400F", "Procesador (CPU)", "Intel Core i5-10400F", 3400, "6 núcleos / 12 hilos, DDR4, Socket LGA1200"]
+    ];
+
+    const contenido = [encabezados, ...ejemplo]
+        .map(fila => fila.join(","))
+        .join("\n");
+
+    const blob = new Blob([contenido], { type: "text/csv" });
+    const enlace = document.createElement("a");
+    enlace.href = URL.createObjectURL(blob);
+    enlace.download = "plantilla_componentes.csv";
+    enlace.click();
 });

@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Gestión de Componentes</h1>
+    <header class="header-app">
+        <h1 class="titulo-pagina">Gestión de Componentes</h1>
+    </header>
+      
 
     <div class="table-actions">
         <div class="filters">
@@ -54,7 +57,12 @@
             </div>
     
             <div class="table-container">
-                <h2>Componentes en la Base de Datos</h2>
+                <div class="titulo-componentes-wrapper">
+                    <h2 class="titulo-componentes">Componentes</h2>
+                    <span id="contador-componentes" class="contador-mini">0 componentes</span>
+                </div>
+                  
+                  
                 <table id="tabla-componentes">
                     <thead>
                         <tr>
@@ -87,8 +95,56 @@
                 </ul>
             </p>
 
-            <label for="archivo-base">Selecciona el archivo:</label>
-            <input type="file" id="archivo-base" accept=".xlsx, .xls, .csv">
+            <!-- 📘 Guía de estructura (expandible) -->
+            <div id="guia-estructura-contenedor" class="guia-estructura">
+                <button id="toggle-guia" class="blue-btn small-btn">📘 ¿Cómo estructurar el archivo?</button>
+            
+                <div id="contenido-guia" class="contenido-guia hidden">
+                <p><strong>Columnas requeridas:</strong></p>
+                <ul>
+                    <li><strong>ID</strong>: Único por componente (ej. CPU-I5-10400F)</li>
+                    <li><strong>Categoría</strong>: Debe coincidir exactamente con las categorías del sistema</li>
+                    <li><strong>Nombre</strong>: Nombre del componente</li>
+                    <li><strong>Precio</strong>: Solo número, sin símbolo</li>
+                    <li><strong>Descripción</strong>: Detalles del componente (DDR, socket, núcleos, etc.)</li>
+                </ul>
+                <p><strong>Ejemplo:</strong></p>
+                    <div class="tabla-ejemplo-container">
+                        <table class="tabla-ejemplo">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Categoría</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Descripción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>CPU-I5-10400F</td>
+                                <td>Procesador (CPU)</td>
+                                <td>Intel Core i5-10400F</td>
+                                <td>3400</td>
+                                <td>6 núcleos / 12 hilos, DDR4, Socket LGA1200</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button id="descargar-plantilla" class="small-btn green-btn" style="margin-top: 12px;">
+                            📥 Descargar plantilla CSV
+                          </button>
+                          
+                    </div>
+
+                </div>
+            </div>
+            
+            <label class="custom-file-upload blue-btn modal-btn">
+                📂 Seleccionar Archivo
+                <input type="file" id="archivo-base" accept=".xlsx, .xls, .csv">
+            </label>
+            <span id="archivo-seleccionado" class="archivo-nombre-mini"></span>
+              
 
             <div id="preview-carga" class="preview-carga hidden">
                 <h3>📋 Vista previa de los datos a cargar:</h3>
@@ -109,9 +165,10 @@
             </div>
             
             <div class="modal-buttons">
-                <button id="eliminar-base" class="red-btn">🗑️ Eliminar Base Actual</button>
-                <button id="confirmar-carga" class="green-btn">✅ Cargar Base</button>
-                <button id="cancelar-carga" class="blue-btn">❌ Cancelar</button>
+                <button id="eliminar-base" class="red-btn modal-btn">🗑️ Eliminar Base Actual</button>
+                <button id="confirmar-carga" class="green-btn modal-btn">✅ Cargar Base</button>
+                <button id="cancelar-carga" class="blue-btn modal-btn">❌ Cancelar</button>
+
             </div>
 
         </div>
@@ -120,10 +177,17 @@
     <!-- Overlay de carga -->
     <div id="overlay-cargando" class="hidden overlay">
         <div class="overlay-content">
-            <p>⏳ Eliminando base de datos...</p>
+            <div class="spinner"></div>
+            <p>⏳ Procesando...</p>
         </div>
-    </div>
+    </div>    
 
+    <footer class="footer-app">
+        <p>
+          Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong>
+        </p>
+    </footer>      
+      
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="index.js"></script>
