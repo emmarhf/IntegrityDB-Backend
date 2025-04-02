@@ -12,7 +12,9 @@ const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
  const descripcionInput = document.getElementById("descripcion");
  
  let componentes = [];
- let categorias = {};
+ let categorias = {};               // ID → Nombre
+ let categoriaNombreAId = {};       // Nombre → ID (para carga)
+
  
  // 🛠️ Generar un ID personalizado según el formato "CPU-i5-12345"
  function generarIDPersonalizado(nombre, categoria) {
@@ -23,21 +25,37 @@ const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
  
  // 🔄 Obtener categorías y almacenarlas en un objeto
  async function fetchCategorias() {
-     const response = await fetch(`${SUPABASE_URL}/rest/v1/categorias`, {
-         headers: {
-             "apikey": SUPABASE_KEY,
-             "Authorization": `Bearer ${SUPABASE_KEY}`,
-             "Content-Type": "application/json"
-         }
-     });
-     const data = await response.json();
-     data.forEach(cat => {
-         categorias[cat.id] = cat.nombre;
-     });
- 
-     // Llenar select de categorías en el formulario
-     categoriaInput.innerHTML = data.map(cat => `<option value="${cat.id}">${cat.nombre}</option>`).join("");
- }
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/categorias`, {
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": `Bearer ${SUPABASE_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await response.json();
+
+        // Limpiar mapas
+        categorias = {};
+        categoriaNombreAId = {};
+
+        // Construir mapas
+        data.forEach(cat => {
+            categorias[cat.id] = cat.nombre;
+            categoriaNombreAId[cat.nombre.trim().toLowerCase()] = cat.id;
+        });
+
+        // Rellenar el <select>
+        categoriaInput.innerHTML = data
+            .map(cat => `<option value="${cat.id}">${cat.nombre}</option>`)
+            .join("");
+
+    } catch (error) {
+        console.error("❌ Error al obtener categorías:", error);
+    }
+}
+
  
  // 🔄 Obtener componentes desde Supabase
  async function fetchComponentes() {
@@ -213,24 +231,24 @@ const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
      return contenido;
  }
  // Función para descargar el archivo CSV
-    function descargarArchivo(componentes, notificar = true) {
-        const csv = convertirACSV(componentes);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const enlace = document.createElement('a');
-        const fechaHora = new Date().toLocaleString();
+ function descargarArchivo(componentes, notificar = true) {
+    const csv = convertirACSV(componentes);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const enlace = document.createElement('a');
+    const fechaHora = new Date().toLocaleString();
 
-        const nombreArchivo = `componentes_${fechaHora}.csv`.replace(/[:]/g, "-");
-        enlace.href = URL.createObjectURL(blob);
-        enlace.download = nombreArchivo;
-        enlace.click();
+    const nombreArchivo = `componentes_${fechaHora}.csv`.replace(/[:]/g, "-");
+    enlace.href = URL.createObjectURL(blob);
+    enlace.download = nombreArchivo;
+    enlace.click();
 
-        // 📲 Notificar solo si se indica
-        if (notificar) {
-            const mensaje = `¡Se realizó una descarga de componentes!\nFecha y Hora: ${fechaHora}`;
-            const enlaceWhatsApp = `https://wa.me/5522971545?text=${encodeURIComponent(mensaje)}`;
-            window.open(enlaceWhatsApp, "_blank");
-        }
+    // 📲 Notificar solo si se indica
+    if (notificar) {
+        const mensaje = `¡Se realizó una descarga de componentes!\nFecha y Hora: ${fechaHora}`;
+        const enlaceWhatsApp = `https://wa.me/5522971545?text=${encodeURIComponent(mensaje)}`;
+        window.open(enlaceWhatsApp, "_blank");
     }
+}
 
  
  // Evento para el botón de descarga
@@ -326,18 +344,27 @@ btnConfirmarCarga.addEventListener("click", async () => {
     if (!confirmar) return;
 
     // 📥 1. Descargar respaldo actual
-    descargarArchivo(componentes, false); // 👈 no notificar aquí
+    descargarArchivo(componentes);
 
     const headers = datosCargados[0];
     const datosValidos = datosCargados.slice(1).map(fila => {
-        const [id, categoria_id, nombre, precio, descripcion] = fila;
+        
+        const [id, categoriaNombre, nombre, precio, descripcion] = fila;
+        const categoria_id = categoriaNombreAId[categoriaNombre.trim().toLowerCase()] || null;
+        
+        if (!categoria_id) {
+            alert(`❌ Categoría inválida: "${categoriaNombre}". Verifica que exista en Supabase.`);
+            throw new Error(`Categoría inválida: ${categoriaNombre}`);
+        }
+        
         return {
             id,
-            categoria_id: parseInt(categoria_id),
+            categoria_id,
             nombre,
             precio: parseFloat(precio),
             descripcion
         };
+        
     });
 
     try {
