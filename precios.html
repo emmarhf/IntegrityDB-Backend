@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Precios · Admin-Suite</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Header reutilizado -->
+    <header class="header-app nav-bar">
+        <div class="nav-title">
+            <h1 class="titulo-pagina">Admin-Suite</h1>
+        </div>
+    
+        <div class="header-actions">
+        <div class="menu-dropdown">
+            <button class="menu-btn">📂 Panel de Herramientas ▾</button>
+            <div class="menu-content">
+            <a href="index.html">Gestión de Componentes</a>
+            <a href="precios.html">Lista de Precios</a>
+            <a href="ods.html">Contrato de Servicios</a>
+            <a href="accesos.html">Administrador de Accesos</a>
+            </div>
+        </div>
+    
+        <button id="logout-btn" class="logout-btn">Cerrar sesión</button>
+        </div>
+    </header>
+
+  <!-- Contenido principal -->
+  <main class="table-actions">
+    <h2 class="titulo-herramienta">LISTA DE PRECIOS</h2>
+
+    <div class="table-container">
+      <table id="tabla-precios">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Categoría</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Datos serán insertados por precios.js -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-app">
+    <p>
+      Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong>
+    </p>
+  </footer>
+
+  <!-- Supabase y lógica -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="precios.js" defer></script>
+</body>
+</html>

@@ -20,20 +20,139 @@ body {
 
 .header-app {
     display: flex;
+    width: 100%;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #f5f5f5;
     border-bottom: 1px solid #ddd;
     margin-bottom: 20px;
 }
 
 .titulo-pagina {
-    width: 100%;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
 }
+
+.titulo-herramienta {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #007aff; /* tono azul Apple */
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+
+/* ------------------------------------------ */
+/* Barra de navegación principal */
+/* ------------------------------------------ */
+.nav-bar {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 10px;
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #007aff;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #005bb5;
+}
+
+/* ------------------------------------------ */
+/* Menú desplegable tipo Apple simple */
+/* ------------------------------------------ */
+.menu-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-btn {
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    color: #007aff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.menu-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 220px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px 0;
+    top: 40px;
+    right: 0;
+}
+
+.menu-content a {
+    color: #007aff;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.menu-content a:hover {
+    background-color: #f8f8f8;
+}
+
+/* Mostrar el menú al hacer hover */
+.menu-dropdown:hover .menu-content {
+    display: block;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Asegura espacio correcto en responsive */
+@media (max-width: 768px) {
+    .header-app {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+}
+
+
 
 /* Contenedor principal */
 .container {
@@ -62,24 +181,24 @@ body {
     font-size: 1.8rem;
     font-weight: 500;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
     text-align: center;
 }
 
 label {
     font-size: 0.9rem;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: block;
     color: #666;
 }
 
 input[type="text"], select {
     width: 100%;
-    padding: 12px 15px; /* Mayor comodidad al escribir */
+    padding: 12px 12px; /* Mayor comodidad al escribir */
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
     outline: none;
     transition: all 0.3s ease;
 }
@@ -92,7 +211,7 @@ input[type="text"]:focus, select:focus {
 /* Estilos para el campo de descripción */
 textarea {
     width: 100%;
-    height: 60px; /* Establecer altura fija */
+    height: 51px; /* Establecer altura fija */
     padding: 12px;
     font-size: 1rem;
     border: 1px solid #ddd;
@@ -600,4 +719,92 @@ thead, tbody tr {
     font-size: 0.8rem;
     color: #555;
     margin-left: 10px;
+}
+
+.login-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 80px auto;
+    text-align: center;
+  }
+  
+  .login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1rem;
+  }
+  
+  .login-container button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+  
+  .switch-mode {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #3498db;
+  }
+  
+  .error-msg {
+    color: red;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+/* ------------------------------------------ */
+/* Botón de cerrar sesión tipo Apple */
+/* ------------------------------------------ */
+.logout-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    width: min-content;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    white-space: nowrap;
+    height: fit-content;
+}
+
+.logout-btn:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+  
+  
+/* ------------------------------------------ */
+/* Tabla de precios (reutiliza el de componentes) */
+/* ------------------------------------------ */
+#tabla-precios {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+#tabla-precios th, #tabla-precios td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+#tabla-precios th {
+    background-color: #f8f8f8;
+    color: #555;
+    font-weight: 600;
 }

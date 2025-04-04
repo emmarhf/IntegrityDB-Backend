@@ -1,7 +1,41 @@
+// ╭──────────────────────────────────────────────────╮
+// │ 1 Inicializar Supabase y validar sesión activa   │
+// ╰──────────────────────────────────────────────────╯
 const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
- const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10amN4YW9vbW95bXV0dHZ0cnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMzMjYyNDMsImV4cCI6MjA1ODkwMjI0M30.P11fBpCkrAzGOmL8PdcuKN_iXZSsH6qXEwdDAP2k4GM";
- 
- const tableBody = document.querySelector("#tabla-componentes tbody");
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10amN4YW9vbW95bXV0dHZ0cnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMzMjYyNDMsImV4cCI6MjA1ODkwMjI0M30.P11fBpCkrAzGOmL8PdcuKN_iXZSsH6qXEwdDAP2k4GM";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Validar sesión antes de cargar la app
+window.addEventListener("DOMContentLoaded", async () => {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data.user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (typeof iniciarApp === "function") {
+    await iniciarApp();
+  }
+
+  // Logout
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      const { error: logoutError } = await supabase.auth.signOut();
+      if (logoutError) {
+        console.error("❌ Error al cerrar sesión:", logoutError.message);
+        alert("Hubo un problema al cerrar sesión. Intenta de nuevo.");
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+  }
+});
+
+
+const tableBody = document.querySelector("#tabla-componentes tbody");
  const searchInput = document.getElementById("search");
  const categoryFilter = document.getElementById("category-filter");
  
@@ -117,9 +151,42 @@ const SUPABASE_URL = "https://mtjcxaoomoymuttvtrzp.supabase.co";
      renderTable(resultados);
  }
  
- // 🔄 Eventos para búsqueda y filtro
- searchInput.addEventListener("input", filtrarComponentes);
- categoryFilter.addEventListener("change", filtrarComponentes);
+
+// ╭────────────────────────────────────╮
+// │ 5 Búsqueda y filtro por categoría │
+// ╰────────────────────────────────────╯
+
+// 🔍 Filtro en múltiples columnas + categoría
+function filtrarComponentes() {
+    const texto = searchInput.value.toLowerCase();
+    const categoriaSeleccionada = categoryFilter.value;
+  
+    const resultados = componentes.filter(componente => {
+      const coincidencia =
+        componente.id?.toLowerCase().includes(texto) ||
+        categorias[componente.categoria_id]?.toLowerCase().includes(texto) ||
+        componente.nombre?.toLowerCase().includes(texto) ||
+        componente.descripcion?.toLowerCase().includes(texto) ||
+        componente.precio?.toString().includes(texto);
+  
+      const categoriaCoincide = !categoriaSeleccionada || componente.categoria_id == categoriaSeleccionada;
+      return coincidencia && categoriaCoincide;
+    });
+  
+    renderTable(resultados); // 🔁 Refrescar tabla
+    actualizarContador(resultados.length); // 🔢 Mostrar cuántos se encontraron
+  }
+  
+  // 🧮 Contador de resultados
+  function actualizarContador(total) {
+    const contador = document.getElementById("contador-componentes");
+    contador.textContent = `${total} resultado${total !== 1 ? "s" : ""} encontrado${total !== 1 ? "s" : ""}`;
+  }
+  
+  // 🔁 Escuchas en inputs de búsqueda
+  searchInput.addEventListener("input", filtrarComponentes);
+  categoryFilter.addEventListener("change", filtrarComponentes);
+
  
  // ➕ Agregar un nuevo componente
  async function agregarComponente(event) {
@@ -519,3 +586,4 @@ document.getElementById("descargar-plantilla").addEventListener("click", () => {
     enlace.download = "plantilla_componentes.csv";
     enlace.click();
 });
+

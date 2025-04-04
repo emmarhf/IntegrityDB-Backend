@@ -7,12 +7,31 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="header-app">
-        <h1 class="titulo-pagina">Gestión de Componentes</h1>
+    <header class="header-app nav-bar">
+        <div class="nav-title">
+            <h1 class="titulo-pagina">Admin-Suite</h1>
+        </div>
+      
+        <div class="header-actions">
+          <div class="menu-dropdown">
+            <button class="menu-btn">📂 Panel de Herramientas ▾</button>
+            <div class="menu-content">
+              <a href="index.html">Gestión de Componentes</a>
+              <a href="precios.html">Lista de Precios</a>
+              <a href="ods.html">Contrato de Servicios</a>
+              <a href="accesos.html">Administrador de Accesos</a>
+            </div>
+          </div>
+      
+          <button id="logout-btn" class="logout-btn">Cerrar sesión</button>
+        </div>
     </header>
       
 
     <div class="table-actions">
+
+        <h2 class="titulo-herramienta">Gestión de Componentes</h2>
+
         <div class="filters">
             <input type="text" id="search" placeholder="Buscar por nombre...">
             <select id="category-filter">
@@ -189,8 +208,17 @@
     </footer>      
       
 
+    <!-- Scripts al final -->
+    <!-- Librería XLSX para leer Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="index.js"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <!-- Tu script principal (sin type='module') -->
+    <script src="index.js" defer></script>
+
+
 
 </body>
 </html>
