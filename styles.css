@@ -12,10 +12,9 @@ body {
     color: #333;
     padding: 20px;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
     flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .header-app {
@@ -35,6 +34,15 @@ body {
     letter-spacing: -0.5px;
     text-transform: uppercase;
 }
+
+.enlace-logo {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .enlace-logo:hover {
+    opacity: 0.85;
+  }
 
 .titulo-herramienta {
     font-size: 1.2rem;
@@ -394,7 +402,7 @@ td:nth-child(6), th:nth-child(6) { /* Columna de botones */
 tbody {
     display: block;
     overflow-y: scroll;
-    max-height: 460px;
+    max-height: 400px;
 }
 
 thead, tbody tr {
@@ -807,4 +815,649 @@ thead, tbody tr {
     background-color: #f8f8f8;
     color: #555;
     font-weight: 600;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+  
+  #buscador-precios {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  
+  #contador-registros {
+    font-size: 0.85rem;
+    color: #777;
+  }
+  
+  .crud-controls {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .btn-primario {
+    padding: 8px 18px;
+    border: none;
+    background-color: #007aff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .btn-primario:hover {
+    background-color: #005fcc;
+}
+
+
+
+
+
+
+
+/* 📆 Estilos del Catálogo de Precios - Admin-Suite */
+
+/* 📦 Contenedor principal */
+.catalogo-precios {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80vh;
+    padding: 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .catalogo-precios h2.titulo-herramienta {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    color: #007aff;
+  }
+  
+  /* 🔍 Buscador y Filtro */
+  .catalogo-precios .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  
+  #buscador-precios,
+  #filtro-categoria {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* 📟 Contador */
+  .contador-precios {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 12px;
+  }
+  
+  /* 🛒 Grid visual con scroll */
+  .grid-precios {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+  
+  /* 💼 Tarjetas de producto */
+  .tarjeta-precio {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+  }
+  
+  .tarjeta-precio:hover {
+    transform: scale(1.01);
+  }
+  
+  .tarjeta-precio h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .tarjeta-precio .categoria-tag {
+    font-size: 0.75rem;
+    color: #555;
+    margin-bottom: 8px;
+    background-color: #f2f2f2;
+    padding: 2px 8px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  
+  .tarjeta-precio p.descripcion {
+    font-size: 0.85rem;
+    color: #777;
+    margin: 6px 0;
+  }
+  
+  .tarjeta-precio .precio {
+    font-weight: bold;
+    color: #007aff;
+    margin-top: 8px;
+  }
+  
+  /* 🛠 Acciones CRUD */
+  .crud-botones {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .crud-botones button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  
+  .crud-botones .editar {
+    background-color: #e0f0ff;
+    color: #0066cc;
+  }
+  
+  .crud-botones .eliminar {
+    background-color: #ffe3e3;
+    color: #cc0000;
+  }
+  
+/* 🎯 Panel Lateral */
+.panel-lateral {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .panel-lateral.visible {
+    transform: translateX(0%);
+  }
+  
+  .panel-contenido {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .panel-contenido h3 {
+    margin-bottom: 10px;
+  }
+  
+  .panel-contenido label {
+    font-weight: 500;
+    margin-top: 8px;
+  }
+  
+  .panel-contenido input,
+  .panel-contenido textarea {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  
+  .panel-contenido textarea {
+    resize: vertical;
+  }
+  
+  .form-botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .btn-guardar {
+    background-color: #007aff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 39%;
+  }
+  
+  .btn-cancelar {
+    background-color: #ccc;
+    color: #333;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 39%;
+  }
+
+  .btn-cancelar:hover{
+    background-color: #cc0000;
+    color: whitesmoke;
+  }
+  
+  /* Ocultar por defecto */
+  .oculto {
+    display: none;
+  }
+
+/* 🎯 Contenedor para botones flotantes */
+.btn-flotante-contenedor {
+    position: fixed;
+    bottom: 69px;
+    right: 25px;
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+  }
+  
+  /* 🔘 Estilos base compartidos */
+  .btn-flotante,
+  .btn-flotante-secundario {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+  }
+  
+  /* ➕ Botón agregar producto */
+  .btn-flotante {
+    background-color: #007aff;
+    color: white;
+  }
+
+  /* 🏷️ Tooltip al hacer hover */
+  .btn-flotante::after {
+    content: "Añadir Nuevo Artículo";
+    position: absolute;
+    right: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #444;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .btn-flotante:hover {
+    background-color: #005fcc;
+  }
+
+  .btn-flotante:hover::after {
+    opacity: 1;
+}
+  
+  /* 📤 Botón exportar */
+  .btn-flotante-secundario {
+    background-color: #00b894;
+    color: white;
+    position: relative;
+  }
+  
+  .btn-flotante-secundario:hover {
+    background-color: #019870;
+  }
+  
+  /* 🏷️ Tooltip al hacer hover */
+  .btn-flotante-secundario::after {
+    content: "Descargar Base de Precios";
+    position: absolute;
+    right: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #444;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .btn-flotante-secundario:hover::after {
+    opacity: 1;
+}
+
+.btn-flotante-cargar {
+    background-color: #ffb347;
+    color: white;
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-flotante-cargar:hover {
+    background-color: #e89d30;
+  }
+
+/* 🏷️ Tooltip al hacer hover */
+.btn-flotante-cargar::after {
+    content: "Cargar Base de Precios";
+    position: absolute;
+    right: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #444;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .btn-flotante-cargar:hover::after {
+    opacity: 1;
+}
+
+.modal-carga-base {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 420px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    padding: 1.5%;
+  }
+  
+  .modal-carga-base.mostrar {
+    transform: translateX(0%);
+  }
+  
+  .modal-carga-base .contenido-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .subir-archivo input[type="file"] {
+    padding: 5px;
+  }
+  
+  .preview-scroll {
+    max-height: 250px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: white;
+  }
+  
+  .preview-scroll table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+  }
+  
+  .preview-scroll th,
+  .preview-scroll td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    font-size: 0.85rem;
+}
+
+.btn-confirmar-carga {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-confirmar-carga:hover {
+    background-color: #218838;
+  }
+
+.oculto {
+    display: none !important;
+  }
+
+  .modal-carga-base.mostrar {
+    transform: translateX(0%);
+    display: block !important;
+}
+
+
+/* ------------------------------------------ */
+/* 📦 Módulos principales estilo visionOS     */
+/* ------------------------------------------ */
+#modulos-principales {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    box-sizing: border-box;
+  }
+  
+  .card-modulo {
+    background: #f0f0f5;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .card-modulo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    background: #e8e8f0;
+  }
+  
+  .card-modulo h3 {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: inherit;
+    letter-spacing: 0.5px;
+  }
+  
+  .card-modulo .icono {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+  
+  .card-modulo.grande {
+    grid-column: span 2;
+    min-height: 220px;
+    font-size: 1.2rem;
+  }
+  
+  /* 🎨 Hover con colores únicos por herramienta */
+  .card-modulo.modulo-admin:hover {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+  }
+  
+  .card-modulo.modulo-componentes:hover {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: white;
+  }
+  
+  .card-modulo.modulo-precios:hover {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    color: #333;
+  }
+  
+  .card-modulo.modulo-ods:hover {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+  }
+  
+  .card-modulo.modulo-accesos:hover {
+    background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+    color: white;
+  }
+  
+  .card-modulo:hover .icono,
+  .card-modulo:hover h3 {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+main#modulos-principales {
+    flex-grow: 1;
+}
+
+.footer-app {
+    margin-top: auto;
+    width: 100%;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    background-color: #f8f8f8;
+    border-top: 1px solid #e0e0e0;
+    z-index: 1;
+    position: relative;
+}
+
+@media (max-width: 600px) {
+    #modulos-principales {
+      grid-template-columns: 1fr;
+      padding: 20px 12px;
+    }
+  
+    .card-modulo.grande {
+      grid-column: span 1;
+      min-height: 180px;
+    }
+}
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2ecc71;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  transition: opacity 0.3s ease, bottom 0.3s ease;
+}
+
+.toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+  margin-top: 1px;
+  font-size: 0.6rem;
+  padding: 4px 0;
+  color: #555;
+  width: 100%;
+  height: min-content;
+}
+
+.paginacion button {
+  padding: 6px 9px;
+  border-radius: 9px;
+  background-color: #fff;
+  color: #007aff;
+  border: 1px solid #ccc;
+  font-weight: 250;
+  font-size: 0.60rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  max-width: 120px;
+}
+
+.paginacion button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.paginacion button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#pagina-actual {
+  font-weight: 250;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  font-size: 0.60rem;
+  max-width: 120px;
 }

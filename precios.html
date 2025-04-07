@@ -11,14 +11,14 @@
   <!-- Header reutilizado -->
     <header class="header-app nav-bar">
         <div class="nav-title">
-            <h1 class="titulo-pagina">Admin-Suite</h1>
+            <a href="index.html" class="titulo-pagina enlace-logo">Admin-Suite</a>
         </div>
     
         <div class="header-actions">
         <div class="menu-dropdown">
             <button class="menu-btn">📂 Panel de Herramientas ▾</button>
             <div class="menu-content">
-            <a href="index.html">Gestión de Componentes</a>
+            <a href="componentes.html">Gestión de Componentes</a>
             <a href="precios.html">Lista de Precios</a>
             <a href="ods.html">Contrato de Servicios</a>
             <a href="accesos.html">Administrador de Accesos</a>
@@ -30,35 +30,119 @@
     </header>
 
   <!-- Contenido principal -->
-  <main class="table-actions">
-    <h2 class="titulo-herramienta">LISTA DE PRECIOS</h2>
-
-    <div class="table-container">
-      <table id="tabla-precios">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Categoría</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Datos serán insertados por precios.js -->
-        </tbody>
-      </table>
+    <div class="catalogo-precios">
+        <h2 class="titulo-herramienta">Lista de Precios</h2>
+    
+        <!-- 🔍 Buscador y filtro -->
+        <div class="search-bar">
+        <input type="text" id="buscador-precios" placeholder="Buscar producto, categoría o descripción..." />
+        <select id="filtro-categoria">
+            <option value="">Todas las categorías</option>
+            <!-- Se llenará dinámicamente -->
+        </select>
+        </div>
+    
+        <!-- 🧾 Contador -->
+        <div class="contador-precios" id="contador-precios">0 productos encontrados</div>
+    
+        <!-- 🛒 Catálogo de productos -->
+        <div class="grid-precios" id="grid-precios">
+        <!-- Las tarjetas se insertarán dinámicamente desde precios.js -->
+        </div>
+        <!-- Controles de paginación -->
+        <div class="paginacion">
+            <span id="pagina-actual"></span>
+            <button id="btn-prev">Anterior</button>
+            <button id="btn-next">Siguiente</button>
+        </div>
     </div>
-  </main>
+
+    <!-- 🔘 Contenedor flotante para los botones -->
+    <div class="btn-flotante-contenedor">
+        <button id="btn-cargar-base" class="btn-flotante-cargar" title="Importar Base">📁</button>
+        <button id="btn-exportar-excel" class="btn-flotante-secundario" title="Cargar Base de Precios">📥</button>
+        <button id="btn-agregar-producto" class="btn-flotante">＋</button>
+    </div>
+
+    <!-- 🧾 Panel lateral para agregar producto -->
+    <div id="panel-lateral" class="panel-lateral oculto">
+        <div class="panel-contenido">
+        <h3>Agregar Producto</h3>
+        <form id="form-agregar-producto">
+            <label>Producto:</label>
+            <input type="text" id="form-producto" required>
+    
+            <label>Categoría:</label>
+            <input list="lista-categorias" id="form-categoria" required>
+            <datalist id="lista-categorias"></datalist>
+
+            <label>Subcategoría:</label>
+            <input list="lista-subcategorias" id="form-subcategoria" required>
+            <datalist id="lista-subcategorias"></datalist>
+    
+            <label>Precio:</label>
+            <input type="number" id="form-precio" required>
+    
+            <label>Descripción:</label>
+            <textarea id="form-descripcion"></textarea>
+    
+            <div class="form-botones">
+            <button type="submit" class="btn-guardar">Guardar</button>
+            <button type="button" id="btn-cerrar-panel" class="btn-cancelar">Cancelar</button>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- 🌐 Modal lateral para carga de base -->
+    <div id="modal-carga-base" class="modal-carga-base oculto">
+        <div class="contenido-modal">
+        <h2>⚠️ Cargar nueva Base de Precios</h2>
+        <p>Esta acción reemplazará por completo la base actual. Asegúrate de usar el formato correcto antes de continuar.</p>
+    
+        <button id="btn-descargar-plantilla">📥 Descargar plantilla compatible</button>
+    
+        <div class="subir-archivo">
+            <label for="input-archivo-base">Seleccionar archivo (.xlsx o .csv):</label>
+            <input type="file" id="input-archivo-base" accept=".xlsx,.csv" />
+        </div>
+    
+        <div id="preview-container" class="preview-scroll oculto">
+            <h3>🧾 Vista previa de la base</h3>
+            <div id="tabla-preview"></div>
+        </div>
+    
+        <button id="btn-confirmar-carga" class="btn-confirmar-carga oculto">✅ Confirmar y Cargar Base</button>
+        <button id="cerrar-modal-carga">❌ Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Overlay de carga para guardar producto -->
+    <div id="overlay-guardando" class="overlay hidden">
+        <div class="overlay-content">
+        <div class="spinner"></div>
+        <p>Guardando producto...</p>
+        </div>
+    </div>
+
+    <!-- Notificación flotante tipo toast -->
+    <div id="toast-notificacion" class="toast hidden">Producto guardado correctamente ✅</div>
+    <!-- ✅ Toast notification con Tailwind -->
+    
+    <div id="toast-alert" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white text-black border border-gray-300 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg text-sm font-medium transition-all duration-300 opacity-0 pointer-events-none z-50">
+    </div>
 
   <!-- Footer -->
-  <footer class="footer-app">
-    <p>
-      Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong>
-    </p>
-  </footer>
+    <footer class="footer-app">
+        <p>
+        Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong>
+        </p>
+    </footer>
 
   <!-- Supabase y lógica -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="precios.js" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

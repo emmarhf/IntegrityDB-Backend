@@ -9,14 +9,14 @@
 <body>
     <header class="header-app nav-bar">
         <div class="nav-title">
-            <h1 class="titulo-pagina">Admin-Suite</h1>
+            <a href="index.html" class="titulo-pagina enlace-logo">Admin-Suite</a>
         </div>
       
         <div class="header-actions">
           <div class="menu-dropdown">
             <button class="menu-btn">📂 Panel de Herramientas ▾</button>
             <div class="menu-content">
-              <a href="index.html">Gestión de Componentes</a>
+              <a href="componentes.html">Gestión de Componentes</a>
               <a href="precios.html">Lista de Precios</a>
               <a href="ods.html">Contrato de Servicios</a>
               <a href="accesos.html">Administrador de Accesos</a>
@@ -27,198 +27,43 @@
         </div>
     </header>
       
+    <main id="modulos-principales">
 
-    <div class="table-actions">
-
-        <h2 class="titulo-herramienta">Gestión de Componentes</h2>
-
-        <div class="filters">
-            <input type="text" id="search" placeholder="Buscar por nombre...">
-            <select id="category-filter">
-                <option value="">Todas las categorías</option>
-                <option value="1">Procesador (CPU)</option>
-                <option value="2">Memoria RAM</option>
-                <option value="3">Tarjeta Gráfica (GPU)</option>
-                <option value="4">Almacenamiento</option>
-                <option value="5">Enfriamiento</option>
-                <option value="6">Fuente de Poder</option>
-                <option value="7">Sistema Operativo</option>
-                <option value="8">Software</option>
-                <option value="9">Accesorios</option>
-            </select>
-        </div>
+        <a href="accesos.html" class="card-modulo modulo-accesos">
+            <div class="icono">🔐</div>
+            <h3>Administrador de Accesos</h3>
+        </a>
         
-        <div class="container">
-            <div class="form-container">
-                <h2 class="addComponents">Añadir Componente</h2>
-                <form id="form-componente">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                
-                    <label for="categoria">Categoría:</label>
-                    <select id="categoria" name="categoria" required>
-                        <option value="">Seleccionar categoría</option>
-                    </select>
-                
-                    <label for="precio">Precio:</label>
-                    <input type="text" id="precio" name="precio" required>
-                
-                    <label for="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="descripcion" placeholder="Ingresa una descripción aquí..."></textarea>
-                
-                    <button type="submit">Agregar Componente</button>
-                </form>  
-                
-                <div class="file-actions">
-                    <button id="btn-cargar-base" class="small-btn blue-btn">📂 Cargar Base</button>
-                    <button id="download-file" class="small-btn green-btn">Descargar</button>
-                </div>                
-            </div>
-    
-            <div class="table-container">
-                <div class="titulo-componentes-wrapper">
-                    <h2 class="titulo-componentes">Componentes</h2>
-                    <span id="contador-componentes" class="contador-mini">0 componentes</span>
-                </div>
-                  
-                  
-                <table id="tabla-componentes">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Categoría</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Los datos de la tabla se cargarán aquí -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-   
-    <!-- Modal de carga de base de datos -->
-    <div id="modal-carga-base" class="modal hidden">
-        <div class="modal-content">
-            <h2>⚠️ Advertencia antes de cargar nueva base</h2>
-            <p>
-                Al cargar una nueva base de datos:
-                <ul>
-                    <li>📥 Se descargará automáticamente una copia de respaldo de la base actual.</li>
-                    <li>📤 Se notificará por WhatsApp al administrador.</li>
-                    <li>⚠️ Este proceso sobrescribirá los datos existentes.</li>
-                </ul>
-            </p>
+        <a href="index.html" class="card-modulo grande modulo-admin">
+            <div class="icono">🧠</div>
+            <h3>ADMIN-SUITE</h3>
+        </a>
 
-            <!-- 📘 Guía de estructura (expandible) -->
-            <div id="guia-estructura-contenedor" class="guia-estructura">
-                <button id="toggle-guia" class="blue-btn small-btn">📘 ¿Cómo estructurar el archivo?</button>
-            
-                <div id="contenido-guia" class="contenido-guia hidden">
-                <p><strong>Columnas requeridas:</strong></p>
-                <ul>
-                    <li><strong>ID</strong>: Único por componente (ej. CPU-I5-10400F)</li>
-                    <li><strong>Categoría</strong>: Debe coincidir exactamente con las categorías del sistema</li>
-                    <li><strong>Nombre</strong>: Nombre del componente</li>
-                    <li><strong>Precio</strong>: Solo número, sin símbolo</li>
-                    <li><strong>Descripción</strong>: Detalles del componente (DDR, socket, núcleos, etc.)</li>
-                </ul>
-                <p><strong>Ejemplo:</strong></p>
-                    <div class="tabla-ejemplo-container">
-                        <table class="tabla-ejemplo">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Categoría</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Descripción</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>CPU-I5-10400F</td>
-                                <td>Procesador (CPU)</td>
-                                <td>Intel Core i5-10400F</td>
-                                <td>3400</td>
-                                <td>6 núcleos / 12 hilos, DDR4, Socket LGA1200</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <button id="descargar-plantilla" class="small-btn green-btn" style="margin-top: 12px;">
-                            📥 Descargar plantilla CSV
-                          </button>
-                          
-                    </div>
-
-                </div>
-            </div>
-            
-            <label class="custom-file-upload blue-btn modal-btn">
-                📂 Seleccionar Archivo
-                <input type="file" id="archivo-base" accept=".xlsx, .xls, .csv">
-            </label>
-            <span id="archivo-seleccionado" class="archivo-nombre-mini"></span>
-              
-
-            <div id="preview-carga" class="preview-carga hidden">
-                <h3>📋 Vista previa de los datos a cargar:</h3>
-                <div class="preview-table-container">
-                    <table id="preview-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Categoría</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Descripción</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="modal-buttons">
-                <button id="eliminar-base" class="red-btn modal-btn">🗑️ Eliminar Base Actual</button>
-                <button id="confirmar-carga" class="green-btn modal-btn">✅ Cargar Base</button>
-                <button id="cancelar-carga" class="blue-btn modal-btn">❌ Cancelar</button>
-
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Overlay de carga -->
-    <div id="overlay-cargando" class="hidden overlay">
-        <div class="overlay-content">
-            <div class="spinner"></div>
-            <p>⏳ Procesando...</p>
-        </div>
-    </div>    
+        <a href="componentes.html" class="card-modulo modulo-componentes">
+            <div class="icono">🧩</div>
+            <h3>Gestión de Componentes</h3>
+        </a>
+      
+        <a href="precios.html" class="card-modulo modulo-precios">
+          <div class="icono">🛒</div>
+          <h3>Lista de Precios</h3>
+        </a>
+      
+        <a href="ods.html" class="card-modulo modulo-ods">
+          <div class="icono">📄</div>
+          <h3>Contrato de Servicios</h3>
+        </a>
+      
+    </main>
 
     <footer class="footer-app">
         <p>
           Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong>
         </p>
     </footer>      
-      
 
-    <!-- Scripts al final -->
-    <!-- Librería XLSX para leer Excel -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-    <!-- Tu script principal (sin type='module') -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <script src="index.js" defer></script>
-
-
 
 </body>
 </html>
