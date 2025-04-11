@@ -1461,3 +1461,266 @@ main#modulos-principales {
   font-size: 0.60rem;
   max-width: 120px;
 }
+
+.mensaje-sin-resultados {
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 2rem auto;
+  max-width: 500px;
+  border: 1px solid #e0e0e0;
+}
+
+.mensaje-sin-resultados h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mensaje-sin-resultados p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 1.2rem;
+}
+
+.botones-sugerencia {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.botones-sugerencia a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #eaeaea;
+  color: #000;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+.botones-sugerencia a:hover {
+  background-color: #ddd;
+  border-color: #aaa;
+}
+
+.boton-telegram {
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #0088cc;
+  color: #fff;
+  border: none;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.boton-telegram:hover {
+  background-color: #007ab8;
+  background-color: #007ab8;
+}
+
+
+
+/* ╭─────────────────────────────╮
+   │ Estilos para ODS (Ordenes) │
+   ╰─────────────────────────────╯*/
+/* ╭─────────────────────────────╮
+   │ Estilos para ODS (Ordenes) │
+   ╰─────────────────────────────╯*/
+
+   .contenedor-ods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .formulario-ods {
+    flex: 1;
+    min-width: 320px;
+    max-width: 400px;
+    max-height: 65vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e0e0e0;
+    scroll-behavior: smooth;
+  }
+  
+  .seccion-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .seccion-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .seccion-form input,
+  .seccion-form textarea,
+  .seccion-form select {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+  }
+  
+  #agregar-articulo {
+    background: #004999;
+    border: 1px dashed #aaa;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    color: white;
+  }
+  
+  #agregar-articulo:hover {
+    background-color: #eee;
+    color: #000;
+  }
+  
+  /* ╭────────────────────────────────────╮
+   │ Tabla Historial ODS con scroll     │
+   ╰────────────────────────────────────╯*/
+  /* Contenedor general de tabla + filtro */
+#bloque-ods-historial {
+  flex: 1 1 60%;
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  width: 60%;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* En pantallas chicas, se apila abajo del formulario */
+@media screen and (max-width: 1024px) {
+  #bloque-ods-historial {
+    flex: 1 1 100%;
+    max-height: none;
+  }
+}
+
+#filtro-historial {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  border-radius: 0.6rem;
+  border: 1px solid #ccc;
+}
+
+/* Scroll unificado horizontal + sticky header */
+#tabla-ods-wrapper {
+  overflow-x: auto;
+  height: 100%;
+  flex: 1;
+}
+
+#tabla-ods {
+  width: 100%;
+  min-width: 1500px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  table-layout: fixed;
+}
+
+#tabla-ods th,
+#tabla-ods td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+/* Específico para columnas clave */
+#tabla-ods th:nth-child(1),
+#tabla-ods td:nth-child(1) {
+  width: 150px; /* Consecutivo */
+}
+
+#tabla-ods th:nth-child(3),
+#tabla-ods td:nth-child(3) {
+  width: 90px; /* Terminal */
+}
+
+#tabla-ods th:nth-child(4),
+#tabla-ods td:nth-child(4) {
+  width: 90px; /* Operación */
+}
+
+#tabla-ods th:nth-child(6),
+#tabla-ods td:nth-child(6) {
+  width: 90px; /* Total con IVA */
+}
+#tabla-ods th:nth-child(7),
+#tabla-ods td:nth-child(7) {
+  width: 90px; /* Total sin IVA */
+}
+#tabla-ods th:nth-child(8),
+#tabla-ods td:nth-child(8) {
+  width:180px; /* Acciones */
+}
+
+
+#tabla-ods thead th {
+  background-color: #f3f3f3;
+  font-weight: bold;
+  color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Estilo visual adicional */
+#tabla-ods tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+#tabla-ods tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+.acciones-contenedor {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.btn-editar,
+.btn-ver {
+  background: #2366d1;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  min-width: 90px;
+  white-space: wrap;
+}
+
+.btn-editar:hover,
+.btn-ver:hover {
+  background: #1a4c9c;
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ordenes de Servicio · Admin-Suite</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header reutilizable -->
+    <header class="header-app nav-bar">
+      <div class="nav-title">
+        <a href="index.html" class="titulo-pagina enlace-logo">Admin-Suite</a>
+      </div>
+
+      <div class="header-actions">
+        <div class="menu-dropdown">
+          <button class="menu-btn">📂 Panel de Herramientas ▾</button>
+          <div class="menu-content">
+            <a href="componentes.html">Gestión de Componentes</a>
+            <a href="precios.html">Lista de Precios</a>
+            <a href="ods.html">Contrato de Servicios</a>
+            <a href="accesos.html">Administrador de Accesos</a>
+          </div>
+        </div>
+        <button id="logout-btn" class="logout-btn">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="contenedor-ods">
+        <section class="bloque-izquierdo-ods">
+            <h2 class="titulo-herramienta">Órdenes de Servicio</h2>
+            <!-- Formulario -->
+            <form id="form-ods" class="formulario-ods">
+            <!-- Datos del Cliente -->
+            <div class="seccion-form">
+              <label>Nombre del Cliente <input type="text" name="cliente" required /></label>
+              <label>Teléfono de Contacto <input type="tel" name="telefono" required /></label>
+              <label>Email <input type="email" name="email" required /></label>
+            </div>
+        
+            <!-- Información Operativa -->
+            <div class="seccion-form">
+              <label>Asesor <input type="text" name="asesor" required /></label>
+              <label>Terminal <input type="text" name="terminal" required /></label>
+              <label>Operación <input type="text" name="operacion" required /></label>
+            </div>
+        
+            <!-- Artículos -->
+            <div class="seccion-form">
+              <h3>Artículos o Servicios</h3>
+              <div id="articulos-container"></div>
+              <button type="button" id="agregar-articulo">+ Añadir artículo</button>
+            </div>
+        
+            <!-- Ajustes -->
+            <div class="seccion-form">
+              <label>Descuento/Aumento ($)
+                <input type="number" name="ajuste" value="0" step="0.01" />
+              </label>
+              <label>Observaciones
+                <textarea name="observaciones" rows="3"></textarea>
+              </label>
+            </div>
+        
+            <!-- Información adicional -->
+            <div class="seccion-form info-extra">
+              <details>
+                    <summary>📦 Información del equipo (opcional)</summary>
+                    <label>Marca <input type="text" name="marca" /></label>
+                    <label>Modelo <input type="text" name="modelo" /></label>
+                    <label>Número de Serie <input type="text" name="serie" /></label>
+                    <label>Detalles adicionales
+                        <textarea name="detalles_equipo" rows="3" placeholder="Descripción extra del equipo..."></textarea>
+                    </label>
+                </details>
+            </div>
+        
+            <!-- Fechas -->
+            <div class="seccion-form">
+              <label>Fecha de Operación <input type="date" name="fecha_operacion" id="fecha-operacion" required /></label>
+              <label>Vigencia
+                <select name="vigencia" id="vigencia-select">
+                  <option value="0.04">15 días</option>
+                  <option value="1">1 año</option>
+                  <option value="2">2 años</option>
+                  <option value="3">3 años</option>
+                  <option value="0">Sin vigencia</option>
+                </select>
+              </label>
+              <label>Vigente hasta
+                <input type="text" id="vigencia-final" readonly />
+              </label>
+              <label>Fecha Estimada de Entrega <input type="date" name="fecha_entrega" id="fecha-entrega" required /></label>
+            </div>
+        
+            <!-- Recomendación -->
+            <div class="seccion-form">
+              <label>¿Qué tan probable es que nos recomiende?
+                <select name="recomienda" required>
+                  <option disabled selected value="">Seleccionar</option>
+                  <option value="1">1 - Nada probable</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - Neutro</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10 - Muy probable</option>
+                </select>
+              </label>
+            </div>
+        
+            <!-- Guardar -->
+            <div class="seccion-form">
+              <button type="submit" id="btn-guardar-ods">💾 Guardar Orden</button>
+            </div>
+            </form>
+        </section>
+        
+        <!-- Historial -->
+        <aside id="bloque-ods-historial">
+            <h3>Historial de Órdenes</h3>
+            <input type="text" id="filtro-historial" placeholder="🔍 Buscar por Folio, Cliente, Terminal u Operación">
+            <div id="tabla-ods-wrapper">
+              <table id="tabla-ods"></table>
+            </div>
+        </aside>
+
+    </main>
+
+    <footer class="footer-app">
+      <p>Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="ods.js" defer></script>
+  </body>
+</html>

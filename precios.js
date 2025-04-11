@@ -155,13 +155,20 @@ async function aplicarFiltros() {
   
       productosFiltrados = data.filter((item) => {
         const matchCategoria = categoria === "" || item.categoria?.toLowerCase() === categoria;
+        const terminoNormalizado = termino.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         const matchExtra =
-          item.descripcion?.toLowerCase().includes(termino) ||
-          item.subcategoria?.toLowerCase().includes(termino) ||
-          item.categoria?.toLowerCase().includes(termino) ||
-          item.id?.toLowerCase().includes(termino);
-        return matchCategoria && (termino.length === 0 || matchExtra);
-      });
+        
+        item.producto?.toLowerCase().includes(termino) ||
+        item.descripcion?.toLowerCase().includes(termino) ||
+        item.subcategoria?.toLowerCase().includes(termino) ||
+        item.categoria?.toLowerCase().includes(termino) ||
+        item.id?.toLowerCase().includes(termino) ||
+        (item.precio !== undefined && item.precio.toString().includes(termino));
+                if (termino.length > 0 && matchExtra) return true;
+                if (termino.length === 0 && matchCategoria) return true;
+                return false;
+            });
+      
     } else {
       productosFiltrados = todosLosProductos;
     }
@@ -175,25 +182,44 @@ async function aplicarFiltros() {
     actualizarControlesPaginacion();
     document.querySelector(".paginacion").style.display = "flex";
   
-    grid.innerHTML = "";
-    contador.textContent = `${productosFiltrados.length} productos encontrados`;
-  
-    productosVisibles.forEach((item) => {
-      const card = document.createElement("div");
-      card.className = "tarjeta-precio";
-      card.innerHTML = `
-        <h3>${item.producto}</h3>
-        <span class="categoria-tag">${item.categoria} > ${item.subcategoria}</span>
-        <p class="descripcion">${item.descripcion}</p>
-        <div class="precio">$${Number(item.precio).toLocaleString()}</div>
-        <div class="crud-botones">
-          <button class="editar" onclick="editarProducto('${item.id}')">Editar</button>
-          <button class="eliminar" onclick="eliminarProducto('${item.id}')">Eliminar</button>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
+    // 🔁 Renderizado de resultados
+        grid.innerHTML = "";
+        contador.textContent = `${productosFiltrados.length} productos encontrados`;
+
+        // ⛔ Si no hay productos en absoluto, mostramos sugerencia
+        if (productosFiltrados.length === 0) {
+        const terminoBusqueda = document.getElementById("buscador-precios").value.trim();
+
+        const sugerencia = document.createElement("div");
+            sugerencia.className = "mensaje-sin-resultados";
+            sugerencia.innerHTML = `
+            <h2>😕 No se encontraron coincidencias</h2>
+            <p>Puedes consultar el canal oficial de cotizaciones en Telegram.</p>
+            <a href="https://t.me" target="_blank" class="boton-telegram">
+                📲 Abrir Telegram y buscar el grupo
+            </a>
+            `;
+            grid.appendChild(sugerencia);
+        return; // solo en este caso se detiene el flujo
+        }
+
+        // ✅ Si hay productos, renderiza normalmente
+        productosVisibles.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "tarjeta-precio";
+        card.innerHTML = `
+            <h3>${item.producto}</h3>
+            <span class="categoria-tag">${item.categoria} > ${item.subcategoria}</span>
+            <p class="descripcion">${item.descripcion}</p>
+            <div class="precio">$${Number(item.precio).toLocaleString()}</div>
+            <div class="crud-botones">
+            <button class="editar" onclick="editarProducto('${item.id}')">Editar</button>
+            <button class="eliminar" onclick="eliminarProducto('${item.id}')">Eliminar</button>
+            </div>
+        `;
+        grid.appendChild(card);
+        });
+}
 
 
 
