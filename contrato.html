@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contrato de Servicios</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 40px auto;
+    max-width: 790px; /* carta: 816px aprox, pero damos margen */
+    padding: 20px;
+    background-color: #fff;
+    color: #000;
+    }
+
+    @media print {
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        transform: scale(0.70); /* Ajusta según tu contenido */
+        transform-origin: top center;
+    }
+
+    .contenedor,
+    .seccion,
+    .tabla-articulos,
+    .footer-clausulas {
+        page-break-inside: avoid;
+    }
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .logo {
+      height: 60px;
+    }
+    .title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .seccion, .tabla-articulos, .footer-clausulas {
+      border: 1px solid #999;
+      padding: 8px;
+      margin-top: 12px;
+    }
+    .grupo {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .grupo div {
+      margin: 5px 0;
+      width: 48%;
+    }
+    .tabla-articulos table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    .tabla-articulos th, .tabla-articulos td {
+      border: 1px solid #999;
+      padding: 5px;
+      text-align: left;
+    }
+    .resumen {
+    background-color: #f1f1f1;
+    padding: .5rem;
+    margin-top: .5rem;
+    border-radius: 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+    font-size: 0.9rem;
+    }
+
+    .resumen div {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 300;
+    }
+
+    .resumen div.total {
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-top: 1px solid #aaa;
+    padding-top: 0.4rem;
+    margin-top: 0.4rem;
+    }
+
+    .firmas-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .firma-bloque {
+      width: 32%;
+      text-align: center;
+      font-size: .75rem;
+    }
+    .firma-linea {
+      margin-top: 25px;
+      border-top: 1px solid #000;
+      height: 1px;
+      padding-top: 0.5rem;
+    }
+    .footer-clausulas {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+    }
+    .footer-clausulas .clausula p {
+    font-size: 0.4rem;
+    line-height: 1.2;
+    }
+    .clausula, .firma-legal {
+      width: 80%;
+    }
+    .firma-legal {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .firma-legal .firma-linea {
+      width: 90%;
+    }
+    .small-title {
+      font-weight: bold;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+    .total-celda {
+      text-align: right;
+    }
+    #consecutivo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: right;
+    }
+
+    .clausulas strong {
+    font-size: 0.75rem;
+    }
+    .firma-aut{
+        font-size: 0.65rem;
+        text-align: center;
+        padding-top: 0.5rem;
+    }
+
+    .recomendacion-linea {
+    font-size: 0.75rem;
+    margin-top: 1rem;
+    border-top: 1px dashed #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="wehelplogo.jpg" alt="Logo" class="logo">
+    <h1>CONTRATO DE SERVICIOS</h1>
+    <div id="consecutivo">E2-BCOYCOM-0000</div>
+  </div>
+
+  <div class="grupo">
+    <div><strong>Nombre del Cliente:</strong> <span id="cliente"></span></div>
+    <div><strong>Número de Contacto:</strong> <span id="telefono"></span></div>
+    <div><strong>Email:</strong> <span id="email"></span></div>
+  </div>
+
+  <div class="seccion">
+    <div class="grupo">
+      <div><strong>Asesor:</strong> <span id="asesor"></span></div>
+      <div><strong>Terminal:</strong> <span id="terminal"></span></div>
+      <div><strong>Operación:</strong> <span id="operacion"></span></div>
+      <div><strong>Fecha:</strong> <span id="fecha_operacion"></span></div>
+      <div><strong>Promo/Vendedor:</strong> <span id="aliado"></span></div>
+    </div>
+  </div>
+
+  <div class="tabla-articulos">
+    <table>
+      <thead>
+        <tr><th>Artículo o Servicio</th><th>Cantidad</th><th>Precio</th></tr>
+      </thead>
+      <tbody id="tabla-articulos-body">
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="resumen">
+        <div><span>Subtotal:</span> <span id="subtotal">$0.00</span></div>
+        <div><span>Ajuste:</span> <span id="ajuste">$0.00</span></div>
+        <div class="total"><span>Total:</span> <span id="total">$0.00</span></div>
+    </div>
+  </div>
+
+  <div class="grupo">
+    <div><strong>Vigencia:</strong> <span id="vigencia"></span></div>
+    <div><strong>Vigente hasta:</strong> <span id="vigente_hasta"></span></div>
+  </div>
+
+  <div class="seccion">
+    <strong>OBSERVACIONES DE COMPRA/SERVICIO</strong><br>
+    <span id="observaciones"></span>
+  </div>
+
+  <div class="seccion">
+    <strong>Información del equipo</strong>
+    <div class="grupo">
+      <div><strong>Marca:</strong> <span id="marca"></span></div>
+      <div><strong>Modelo:</strong> <span id="modelo"></span></div>
+      <div><strong>No. de Serie:</strong> <span id="serie"></span></div>
+    </div>
+    <div><strong>RIESGO / OBSERVACIONES DESCRITAS POR EL ASESOR:</strong><br><span id="detalles_equipo"></span></div>
+  </div>
+
+  <div class="grupo">
+    <div class="recomendacion-linea">
+        <strong>Recomendación: </strong><span id="recomienda"></span><br>
+    </div>
+    <div><strong>Fecha estimada de entrega:</strong> <span id="fecha_entrega"></span></div>
+  </div>
+
+  <div class="firmas-row">
+    <div class="firma-bloque">
+      <div class="firma-linea"></div>
+      <div>FIRMA DEL ASESOR</div>
+    </div>
+    <div class="firma-bloque">
+      <div class="firma-linea"></div>
+      <div>FIRMA DEL CLIENTE</div>
+    </div>
+  </div>
+
+  <div class="footer-clausulas">
+    <div class="clausula">
+      <div class="small-title">CLÁUSULA: AVISO DE PRIVACIDAD</div>
+      <p>Según ordena la Ley Federal de Protección de Datos Personales en Posesión de Particulares, EL PROVEEDOR hace del conocimiento a EL CLIENTE que sus datos personales capturados en la SOLICITUD DE CONTRATO DE SERVICIOS, como nombre, correo electrónico, domicilio y teléfonos serán utilizados para realizar las funciones comerciales relacionadas con nuestro negocio, así como todas aquellas actividades y procesos que deriven de la relación jurídica que tenemos con usted. Así mismo le informamos que sus datos personales únicamente podrán ser transmitidos a terceros en los casos permitidos por la ley, por ejemplo, cuando sean compartidos con empresas de nuestro mismo grupo, o bien por mandato Legal, o bien por fines de evaluación en la calidad de nuestro servicio. El Cliente SI      NO     otorga su consentimiento expreso a EL PROVEEDOR, para que le envíe comunicados de contacto, promociones, ofertas y/o publicidad, sobre bienes y servicios proporcionada con motivo del presente Contrato. Así como SI acepta      NO acepta     para que EL PROVEEDOR ceda o transmita a terceros, con fines mercadotécnicos o publicitarios.</p>
+      <div class="firma-linea"></div>
+      <div class="firma-aut">FIRMA DE AUTORIZACIÓN DE “EL CLIENTE</div>
+    </div>
+  </div>
+
+  <div class="footer-clausulas">
+    <div class="clausula">
+      <div class="small-title">ACEPTACIÓN DEL CONTRATO DE PRESTACIÓN DE SERVICIOS</div>
+      <p>Con la firma del presente,
+        EL CLIENTE, manifiesta que ha leído sus condiciones, alcance legal, cláusulas y contenido, y acepta así los términos y condiciones que en el mismo se detallan, los cuales también se encuentran de manera impresa en cualquier Módulo de Atención, o en www.spc.integritymexico.com/terminos para su consulta sin costo, entregándosele una copia del mismo a EL CLIENTE, teniendo por lugar y fecha el especificado en este documento. EL CLIENTE reconoce ser el único responsable por la información contenida en el equipo,  por lo tanto, exonera a EL PROVEEDOR de toda responsabilidad por la pérdida total o parcial de la información. EL CLIENTE acepta en su totalidad y reconoce las políticas de Devoluciones, Almacenamiento y Garantía, descritas en el contrato.</p>
+      <div class="firma-linea"></div>
+      <div class="firma-aut">FIRMA DE AUTORIZACIÓN DE “EL CLIENTE</div>
+    </div>
+  </div>
+
+  <script>
+    
+    const raw = localStorage.getItem("ordenSeleccionada");
+
+    if (!raw) {
+      alert("⚠️ No se encontró ninguna orden cargada. Por favor vuelve a la página principal.");
+      window.location.href = "ods.html"; // o tu página principal
+    }
+
+    const orden = JSON.parse(raw);
+    const safe = (v) => v ?? "--";
+    const money = (n) => `$${parseFloat(n || 0).toLocaleString("es-MX", { minimumFractionDigits: 2 })}`;
+
+    window.addEventListener("beforeunload", () => {
+    localStorage.removeItem("ordenSeleccionada");
+    });
+    // Campos de texto simples
+    document.getElementById("consecutivo").textContent = safe(orden.consecutivo);
+    document.getElementById("cliente").textContent = safe(orden.cliente);
+    document.getElementById("telefono").textContent = safe(orden.telefono);
+    document.getElementById("email").textContent = safe(orden.email);
+    document.getElementById("asesor").textContent = safe(orden.asesor);
+    document.getElementById("terminal").textContent = safe(orden.terminal);
+    document.getElementById("operacion").textContent = safe(orden.operacion);
+    document.getElementById("fecha_operacion").textContent = safe(orden.fecha_operacion);
+    document.getElementById("aliado").textContent = safe(orden.aliado);
+    document.getElementById("vigencia").textContent = safe(orden.vigencia);
+    document.getElementById("vigente_hasta").textContent = safe(orden.vigente_hasta);
+    document.getElementById("observaciones").textContent = safe(orden.observaciones);
+    document.getElementById("marca").textContent = safe(orden.marca);
+    document.getElementById("modelo").textContent = safe(orden.modelo);
+    document.getElementById("serie").textContent = safe(orden.serie);
+    document.getElementById("detalles_equipo").textContent = safe(orden.detalles_equipo);
+    document.getElementById("fecha_entrega").textContent = safe(orden.fecha_entrega);
+    document.getElementById("recomienda").textContent = safe(orden.recomienda);
+  
+    // Totales
+    const subtotal = parseFloat(orden.total_sin_iva || 0) - parseFloat(orden.ajuste || 0);
+    document.getElementById("subtotal").textContent = money(subtotal);
+    document.getElementById("ajuste").textContent = money(orden.ajuste);
+    document.getElementById("total").textContent = money(orden.total_sin_iva);
+  
+    // Artículos
+    const tbody = document.getElementById("tabla-articulos-body");
+    tbody.innerHTML = "";
+  
+    if (Array.isArray(orden.articulos) && orden.articulos.length > 0) {
+      orden.articulos.forEach(item => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${safe(item.articulo)}</td>
+          <td>${safe(item.cantidad)}</td>
+          <td>${money(item.precio)}</td>
+        `;
+        tbody.appendChild(fila);
+      });
+    } else {
+      for (let i = 0; i < 3; i++) {
+        const fila = document.createElement("tr");
+        fila.innerHTML = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+        tbody.appendChild(fila);
+      }
+    }
+  </script>
+</body>
+</html>
