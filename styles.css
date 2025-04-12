@@ -1356,6 +1356,11 @@ thead, tbody tr {
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
     color: white;
   }
+
+  .card-modulo.cotizador:hover {
+    background: linear-gradient(135deg, #d7d369, #a7e11e);
+    color: white;
+  }
   
   .card-modulo.modulo-accesos:hover {
     background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
