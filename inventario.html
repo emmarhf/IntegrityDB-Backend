@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario · Admin-Suite</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .inventario-layout {
+    display: flex;
+    height: 100%;
+    gap: 1rem;
+    padding: 1rem;
+    }
+
+    .sidebar-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: #f3f3f3;
+      padding: 1rem;
+      border-radius: 12px;
+      min-width: 180px;
+      height: 100%;
+    }
+
+    .sidebar-tabs button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #ddd;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .sidebar-tabs button.active {
+      background-color: #2563eb;
+      color: white;
+    }
+   
+    .panel-inventario {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    }
+
+    .panel-inventario.visible {
+    display: flex;
+    }
+
+    .panel-inventario > div:first-child {
+    flex: 0 0 auto;
+    }
+
+    .panel-inventario input {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .panel-inventario.visible {
+    display: flex;
+    }
+
+    .panel-inventario > div:first-child {
+    flex: 0 0 auto;
+    }
+
+    .tabla-scroll {
+  height: 75vh;
+  overflow-y: auto;
+  background-color: aqua;
+}
+
+
+    table.tabla-inv {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    height: 100%;
+    table-layout:auto;
+    }
+
+    .tabla-inv thead {
+  height: auto;
+}
+
+
+    .tabla-inv th, .tabla-inv td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+
+    .tabla-inv th {
+      background: #f7f7f7;
+      font-weight: bold;    
+    }
+
+/* Aumentar espacio para Categoría (segunda columna de la tabla) */
+.tabla-inv th:nth-child(2),
+.tabla-inv td:nth-child(2) {
+  width: 30%;
+}
+
+/* Estilos de botones de acciones */
+.acciones button {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.25rem;
+  padding: 0.3rem 0.4rem;
+  background:#2563eb;
+  border: 1px solid #b3ccf3;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.acciones button:hover {
+  background: #d3e4ff;
+  color: black;
+}
+
+    .btn-flotante {
+      position: fixed;
+      bottom: 5rem;
+      left: 2rem;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 36px;
+      width: max-content;
+      height: max-content;
+      font-size: .90rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    #modal-inv {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 9999;
+  transition: right 0.3s ease;
+}
+#modal-inv.visible { right: 0; }
+
+#modal-inv input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#modal-inv button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#overlay-carga {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.3);
+  color: white;
+  font-size: 1.2rem;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+}
+
+
+
+
+
+  </style>
+</head>
+
+<body>
+  <header class="header-app nav-bar">
+    <div class="nav-title">
+      <a href="index.html" class="titulo-pagina enlace-logo">Admin-Suite</a>
+    </div>
+    <div class="header-actions">
+      <div class="menu-dropdown">
+        <button class="menu-btn">📂 Panel de Herramientas ▾</button>
+        <div class="menu-content">
+          <a href="componentes.html">Gestión de Componentes</a>
+          <a href="precios.html">Lista de Precios</a>
+          <a href="ods.html">Contrato de Servicios</a>
+          <a href="inventario.html">Inventario</a>
+          <a href="accesos.html">Administrador de Accesos</a>
+        </div>
+      </div>
+      <button id="logout-btn" class="logout-btn">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="inventario-layout">
+    <div class="sidebar-tabs">
+      <button id="tab-vista" class="active">📋 Visualización</button>
+      <button id="tab-control">🛠️ Control</button>
+    </div>
+
+    <div id="panel-vista" class="panel-inventario visible">
+      <div>
+        <input id="filtro-cat-vista" type="text" placeholder="Filtrar por categoría">
+        <input id="filtro-art-vista" type="text" placeholder="Filtrar por artículo">
+      </div>
+      <div class="tabla-scroll">
+        <table class="tabla-inv">
+          <thead>
+            <tr><th>Categoría</th><th>Artículo</th><th>Piezas</th></tr>
+          </thead>
+          <tbody id="tabla-vista"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="panel-control" class="panel-inventario">
+      <div>
+        <input id="filtro-cat-control" type="text" placeholder="Filtrar por categoría">
+        <input id="filtro-art-control" type="text" placeholder="Filtrar por artículo">
+      </div>
+      <div class="tabla-scroll">
+        <table class="tabla-inv">
+          <thead>
+            <tr><th>Módulo</th><th>Categoría</th><th>Artículo</th><th>Piezas</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tabla-control"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button id="btn-agregar" class="btn-flotante">+ Añadir a Inventario</button>
+  </main>
+
+  <!-- Modal lateral para añadir/editar -->
+    <div id="modal-inv" class="modal-inv">
+        <h3 id="titulo-modal">➕ Nuevo artículo</h3>
+        <input type="text" id="modulo" placeholder="Módulo">
+        <input type="text" id="categoria" placeholder="Categoría">
+        <input type="text" id="articulo" placeholder="Artículo">
+        <input type="number" id="piezas" placeholder="Piezas">
+        <input type="text" id="sku" placeholder="SKU">
+        <button id="guardar-inv">Guardar</button>
+        <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+    
+    <!-- Overlay de carga -->
+    <div id="overlay-carga">
+        <span>Procesando...</span>
+    </div>
+
+  <footer class="footer-app">
+    <p>Desarrollado para <strong>Integrity</strong> · Impulsado by <strong>DIGITEM-MX</strong></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      'https://mtjcxaoomoymuttvtrzp.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10amN4YW9vbW95bXV0dHZ0cnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMzMjYyNDMsImV4cCI6MjA1ODkwMjI0M30.P11fBpCkrAzGOmL8PdcuKN_iXZSsH6qXEwdDAP2k4GM'
+    );
+
+    let inventario = [];
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const { data: session } = await supabase.auth.getUser();
+      if (!session?.user) return window.location.href = "login.html";
+
+      document.getElementById("logout-btn").addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.href = "login.html";
+      });
+
+      cargarInventario();
+
+      document.getElementById("tab-vista").addEventListener("click", () => cambiarVista(true));
+      document.getElementById("tab-control").addEventListener("click", () => cambiarVista(false));
+
+      document.getElementById("filtro-cat-vista").addEventListener("input", renderVista);
+      document.getElementById("filtro-art-vista").addEventListener("input", renderVista);
+      document.getElementById("filtro-cat-control").addEventListener("input", renderControl);
+      document.getElementById("filtro-art-control").addEventListener("input", renderControl);
+    });
+
+    async function cargarInventario() {
+      const { data, error } = await supabase.from("inventario").select("*");
+      if (error) return alert("❌ Error cargando inventario");
+      inventario = data;
+      renderVista();
+      renderControl();
+    }
+
+    function cambiarVista(esVista) {
+      document.getElementById("tab-vista").classList.toggle("active", esVista);
+      document.getElementById("tab-control").classList.toggle("active", !esVista);
+      document.getElementById("panel-vista").classList.toggle("visible", esVista);
+      document.getElementById("panel-control").classList.toggle("visible", !esVista);
+      document.getElementById("btn-agregar").style.display = esVista ? "none" : "block";
+    }
+
+    function renderVista() {
+      const cat = document.getElementById("filtro-cat-vista").value.toLowerCase();
+      const art = document.getElementById("filtro-art-vista").value.toLowerCase();
+      const tbody = document.getElementById("tabla-vista");
+      tbody.innerHTML = "";
+      inventario.filter(i => i.categoria.toLowerCase().includes(cat) && i.articulo.toLowerCase().includes(art))
+        .forEach(i => {
+          tbody.innerHTML += `<tr><td>${i.categoria}</td><td>${i.articulo}</td><td>${i.piezas}</td></tr>`;
+        });
+    }
+
+    function renderControl() {
+  const cat = document.getElementById("filtro-cat-control").value.toLowerCase();
+  const art = document.getElementById("filtro-art-control").value.toLowerCase();
+  const tbody = document.getElementById("tabla-control");
+  tbody.innerHTML = "";
+
+  inventario
+    .filter(i => i.categoria.toLowerCase().includes(cat) && i.articulo.toLowerCase().includes(art))
+    .forEach(i => {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${i.modulo}</td>
+        <td>${i.categoria}</td>
+        <td>${i.articulo}</td>
+        <td>${i.piezas}</td>
+        <td class="acciones">
+          <button class="btn-editar">✏️ Editar</button>
+          <button class="btn-eliminar">🗑️ Eliminar</button>
+          <button class="btn-solicitar">📦 Solicitar</button>
+        </td>
+      `;
+      // ⚡ Enlazamos eventos por DOM
+      fila.querySelector(".btn-editar").addEventListener("click", () => editarArticulo(i.id));
+      fila.querySelector(".btn-eliminar").addEventListener("click", () => eliminarArticulo(i.id));
+      fila.querySelector(".btn-solicitar").addEventListener("click", () => alert("Función pendiente: Solicitar artículo"));
+      tbody.appendChild(fila);
+    });
+}
+
+    const modal = document.getElementById("modal-inv");
+const overlay = document.getElementById("overlay-carga");
+let editandoId = null;
+
+// Abrir modal
+document.getElementById("btn-agregar").addEventListener("click", () => abrirModal());
+
+// Función para abrir modal
+function abrirModal(item = null) {
+  modal.classList.add("visible");
+  document.getElementById("titulo-modal").textContent = item ? "✏️ Editar artículo" : "➕ Nuevo artículo";
+  document.getElementById("guardar-inv").textContent = item ? "Guardar cambios" : "Guardar";
+  editandoId = item?.id || null;
+
+  document.getElementById("modulo").value = item?.modulo || "";
+  document.getElementById("categoria").value = item?.categoria || "";
+  document.getElementById("articulo").value = item?.articulo || "";
+  document.getElementById("piezas").value = item?.piezas || "";
+}
+
+// Cerrar modal
+function cerrarModal() {
+  modal.classList.remove("visible");
+  editandoId = null;
+}
+
+// Guardar (nuevo o editar)
+document.getElementById("guardar-inv").addEventListener("click", async () => {
+  const modulo = document.getElementById("modulo").value.trim();
+  const categoria = document.getElementById("categoria").value.trim();
+  const articulo = document.getElementById("articulo").value.trim();
+  const piezas = parseInt(document.getElementById("piezas").value.trim());
+
+  if (!modulo || !categoria || !articulo || isNaN(piezas)) {
+    alert("⚠️ Todos los campos son obligatorios y 'piezas' debe ser un número.");
+    return;
+  }
+
+  const datos = {
+  modulo,
+  categoria,
+  articulo,
+  piezas,
+  sku: document.getElementById("sku").value.trim() || "SIN-SKU"
+};
+  console.log("🧪 Enviando datos a Supabase:", datos);
+
+  overlay.style.display = "flex";
+
+  let resultado;
+  if (editandoId) {
+    resultado = await supabase.from("inventario").update(datos).eq("id", editandoId);
+  } else {
+    resultado = await supabase.from("inventario").insert([datos]);
+  }
+
+  overlay.style.display = "none";
+  cerrarModal();
+  cargarInventario();
+
+  if (resultado.error) {
+    console.error("❌ Error al guardar:", resultado.error);
+    alert("Error al guardar: " + resultado.error.message);
+  }
+});
+// Eliminar artículo
+async function eliminarArticulo(id) {
+  if (!confirm("¿Eliminar este artículo?")) return;
+  overlay.style.display = "flex";
+  await supabase.from("inventario").delete().eq("id", id);
+  overlay.style.display = "none";
+  cargarInventario();
+}
+
+// Llamar al modal desde editar
+function editarArticulo(id) {
+  const item = inventario.find(x => x.id === id);
+  abrirModal(item);
+}
+
+  </script>
+  
+</body>
+</html>

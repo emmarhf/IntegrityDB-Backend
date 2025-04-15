@@ -175,13 +175,13 @@ body {
 
 /* Formulario */
 .form-container {
-    width: 100%;
+    width: 35%;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Sombra más suave */
     transition: all 0.3s ease;
-    height: 70vh;
+    height: 60vh;
 }
 
 .form-container h2 {
@@ -1297,7 +1297,7 @@ thead, tbody tr {
   .card-modulo {
     background: #f0f0f5;
     border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     padding: 24px;
     text-align: center;
     transition: all 0.3s ease;
@@ -1370,6 +1370,21 @@ thead, tbody tr {
   .card-modulo:hover .icono,
   .card-modulo:hover h3 {
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.card-modulo.modulo-inventario:hover {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: white;
+}
+
+.card-modulo.modulo-vendidos:hover {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: #333;
+}
+
+.card-modulo.modulo-requerimientos:hover {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
 }
 
 main#modulos-principales {
@@ -1871,3 +1886,4 @@ main#modulos-principales {
   .panel-ods h3 {
     margin-bottom: 1rem;
   }
+
