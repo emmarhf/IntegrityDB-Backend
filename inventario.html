@@ -68,9 +68,8 @@
     }
 
     .tabla-scroll {
-  height: 75vh;
-  overflow-y: auto;
-  background-color: aqua;
+  height: 100%;
+  overflow-x: auto;
 }
 
 
@@ -126,8 +125,8 @@
 
     .btn-flotante {
       position: fixed;
-      bottom: 5rem;
-      left: 2rem;
+      bottom: 60%;
+      left: 3rem;
       background: #2563eb;
       color: white;
       border: none;
@@ -184,9 +183,6 @@
   height: 100vh;
   z-index: 9998;
 }
-
-
-
 
 
   </style>
@@ -251,6 +247,11 @@
     <button id="btn-agregar" class="btn-flotante">+ Añadir a Inventario</button>
   </main>
 
+  <section style="width: 100%; height: 90%; padding: 1rem; background: #fff; border-top: 1px solid #eee;">
+    <h3 style="margin-bottom: 1rem;">📊 Total de Artículos por Categoría</h3>
+    <canvas id="grafica-categorias" height="100"></canvas>
+  </section>
+
   <!-- Modal lateral para añadir/editar -->
     <div id="modal-inv" class="modal-inv">
         <h3 id="titulo-modal">➕ Nuevo artículo</h3>
@@ -273,6 +274,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
     const supabase = window.supabase.createClient(
       'https://mtjcxaoomoymuttvtrzp.supabase.co',
@@ -435,6 +438,79 @@ async function eliminarArticulo(id) {
 function editarArticulo(id) {
   const item = inventario.find(x => x.id === id);
   abrirModal(item);
+}
+
+let grafica;
+
+function actualizarGrafica() {
+  const conteoArticulos = {};
+  const conteoPiezas = {};
+
+  inventario.forEach(item => {
+    const cat = item.categoria || "Sin Categoría";
+    conteoArticulos[cat] = (conteoArticulos[cat] || 0) + 1;
+    conteoPiezas[cat] = (conteoPiezas[cat] || 0) + (item.piezas || 0);
+  });
+
+  const labels = Object.keys(conteoArticulos);
+  const datosArticulos = labels.map(cat => conteoArticulos[cat]);
+  const datosPiezas = labels.map(cat => conteoPiezas[cat]);
+
+  const ctx = document.getElementById("grafica-categorias").getContext("2d");
+
+  if (grafica) grafica.destroy();
+
+  grafica = new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        label: "Artículos",
+        data: datosArticulos,
+        backgroundColor: "#2563eb",
+        yAxisID: "yArticulos"
+      },
+      {
+        label: "Piezas",
+        data: datosPiezas,
+        backgroundColor: "#22c55e",
+        yAxisID: "yPiezas"
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" }
+    },
+    scales: {
+      yArticulos: {
+        type: "linear",
+        position: "left",
+        beginAtZero: true,
+        title: { display: true, text: "N° de Artículos" },
+        ticks: { stepSize: 1 }
+      },
+      yPiezas: {
+        type: "linear",
+        position: "right",
+        beginAtZero: true,
+        title: { display: true, text: "Total de Piezas" },
+        grid: { drawOnChartArea: false } // Oculta líneas cruzadas
+      }
+    }
+  }
+});
+}
+
+async function cargarInventario() {
+  const { data, error } = await supabase.from("inventario").select("*");
+  if (error) return alert("❌ Error cargando inventario");
+  inventario = data;
+  renderVista();
+  renderControl();
+  actualizarGrafica(); // 👈 Agregado aquí
 }
 
   </script>
