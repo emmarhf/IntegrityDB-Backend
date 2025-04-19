@@ -16,15 +16,23 @@
           <div class="menu-dropdown">
             <button class="menu-btn">📂 Panel de Herramientas ▾</button>
             <div class="menu-content">
+              <a href="index.html">INICIO ADMIN-SUITE </a>
+              <a href="accesos.html">Administrador de Accesos</a>
               <a href="componentes.html">Gestión de Componentes</a>
+          
               <a href="precios.html">Lista de Precios</a>
               <a href="ods.html">Contrato de Servicios</a>
-              <a href="accesos.html">Administrador de Accesos</a>
+              <a href="https://betaconfiguradorwh.vercel.app/" target="_blank">Cotizador PC</a>
+          
+              <a href="inventario.html">Inventario</a>
+              <a href="vendidos.html">Productos Vendidos</a>
+              <a href="requerimientos.html">Requerimientos</a>
             </div>
           </div>
       
           <button id="logout-btn" class="logout-btn">Cerrar sesión</button>
         </div>
+        
     </header>
       
     <main id="modulos-principales">
@@ -70,12 +78,58 @@
           <h3>Productos Vendidos</h3>
         </a>
         
-        <a href="reque.html" class="card-modulo modulo-requerimientos">
+        <a href="requerimientos.html" class="card-modulo modulo-requerimientos">
           <div class="icono">📝</div>
           <h3>Requerimientos</h3>
         </a>
       
     </main>
+
+    <!-- Botón flotante -->
+    <button id="btn-chat" title="Chat de Módulo">💬</button>
+
+    <!-- Modal de Chat -->
+    <div id="chat-modal">
+      <header>
+        <span>💬 Chat de Módulo</span>
+        <br>
+        <button class="ocultar-chat">Ocultar Chat</button>
+      </header>
+
+      <div id="chat-mensajes">
+        <div class="sistema-msg">💡 Este chat está en pruebas...</div>
+      </div>
+
+        <form id="form-chat" novalidate>
+          <div class="chat-input-wrapper">
+            <select id="destinatario" required>
+              <option value="">Selecciona Destinatario...</option>
+            </select>
+            <input type="text" id="mensaje-input" placeholder="Escribe un mensaje..." />
+            <button type="submit" title="Enviar">Enviar 📤</button>
+          </div>
+        </form>
+    </div>
+
+    <div id="noti-box" style="
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        width: 260px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+        display: none;
+        z-index: 10000;
+      ">
+        <p id="noti-text" style="margin: 0 0 1rem 0; font-weight: 500; font-size: 0.95rem;">Nuevo mensaje recibido</p>
+        <div style="display: flex; justify-content: space-between;">
+          <button id="abrir-chat" style="background: #2563eb; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer;">Abrir Chat</button>
+          <button id="cerrar-noti" style="background: transparent; border: none; color: #6b7280; font-weight: bold; cursor: pointer;">Cerrar</button>
+        </div>
+      </div>
 
     <footer class="footer-app">
         <p>
